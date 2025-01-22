@@ -36,7 +36,7 @@ const GameSelectionUI : React.FC<GameSelectionUIProps> = ({ isLoading, selectedG
   className="object-contain w-auto h-auto"
 />
         <button 
-         onClick={() => onGameSelect("unity3")}
+         onClick={() => onGameSelect("unity2")}
          disabled={isLoading}
           className="bg-[#FF6B4A] hover:bg-[#FF8266] text-white rounded-full px-8 py-4 text-lg font-semibold shadow-lg transition-all duration-200"
         >
