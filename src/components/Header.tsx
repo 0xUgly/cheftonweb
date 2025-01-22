@@ -33,7 +33,7 @@ function Header() {
         <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center">
           <nav className="text-center w-full px-6">
             <Link 
-              href="/" 
+              href="/gamepage" 
               className="block text-white text-3xl sm:text-4xl mb-6 hover:text-[#FFD700] transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
