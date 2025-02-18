@@ -31,38 +31,63 @@ export default function Leaderboard() {
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        // Using our own server-side proxy to avoid CORS issues
-        const response = await fetch('/api/proxy/leaderboard');
+        setLoading(true);
+        let errorMessages = [];
         
-        if (!response.ok) {
-          throw new Error(`API responded with status: ${response.status}`);
-        }
-        
-        const data: ApiResponse = await response.json();
-        
-        if (!data.scores || !Array.isArray(data.scores)) {
-          throw new Error('Invalid data format received from API');
-        }
-        
-        // Transform the data to match our LeaderboardEntry type
-        const formattedData: LeaderboardEntry[] = data.scores.map((item) => ({
-          name: shortenAddress(item.address),
-          score: item.score
-        }));
-        
-        setLeaderboard(formattedData);
-      } catch (error) {
-        console.error('Error fetching leaderboard:', error);
-        
-        // Use the exact data from your Postman response as fallback
-        const fallbackData: LeaderboardEntry[] = [
-          { name: shortenAddress('0xd23b2d6F4f62c3C66fc5935e38Ea6c88000875532'), score: 215 },
-          { name: shortenAddress('0xd23b2d6F4f62c3C66fc5935e38Ea6c8817021647'), score: 155 },
-          { name: shortenAddress('0xd23b2d6F4f62c3C66fc5935e38Ea6c88145821532'), score: 120 },
-          { name: shortenAddress('0xd23b2d6F4f62c3C66fc5935e38Ea6c8817021532'), score: 120 },
-          { name: shortenAddress('0xd23b2d6F4f62c3C66fc5935e38Ea6c88000021532'), score: 105 }
+        // Try multiple approaches in sequence
+        const endpoints = [
+          'https://highscore-api.vercel.app/api/top-users', // Direct API (might fail due to CORS)
+          '/api/proxy/leaderboard'                          // App Router API route
         ];
-        setLeaderboard(fallbackData);
+        
+        for (const endpoint of endpoints) {
+          try {
+            console.log(`Attempting to fetch from: ${endpoint}`);
+            const response = await fetch(endpoint);
+            
+            if (!response.ok) {
+              const errorText = await response.text();
+              const errorMessage = `${endpoint} responded with status: ${response.status}, body: ${errorText}`;
+              console.warn(errorMessage);
+              errorMessages.push(errorMessage);
+              continue;
+            }
+            
+            const data: ApiResponse = await response.json();
+            
+            if (data?.success && Array.isArray(data.scores)) {
+              console.log(`Successfully loaded data from ${endpoint}:`, data);
+              const formattedData: LeaderboardEntry[] = data.scores.map((item) => ({
+                name: shortenAddress(item.address),
+                score: item.score
+              }));
+              
+              setLeaderboard(formattedData);
+              setLoading(false);
+              return;
+            } else {
+              const errorMessage = `Invalid data format from ${endpoint}: ${JSON.stringify(data)}`;
+              console.warn(errorMessage);
+              errorMessages.push(errorMessage);
+            }
+          } catch (endpointError) {
+            const errorMessage = `Error fetching from ${endpoint}: ${endpointError instanceof Error ? endpointError.message : 'Unknown error'}`;
+            console.error(errorMessage);
+            errorMessages.push(errorMessage);
+          }
+        }
+        
+        // If we reach here, all endpoints failed
+        throw new Error(`All fetch attempts failed:\n${errorMessages.join('\n')}`);
+      } catch (error) {
+        console.error('Leaderboard data fetch failed:', error);
+        
+        // Temporarily show error on screen instead of fallback data
+        const errorDisplay: LeaderboardEntry[] = [
+          { name: 'ERROR LOADING DATA', score: 0 },
+          { name: error instanceof Error ? error.message : 'Unknown error', score: 0 }
+        ];
+        setLeaderboard(errorDisplay);
       } finally {
         setLoading(false);
       }
