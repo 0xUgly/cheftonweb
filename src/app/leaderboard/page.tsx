@@ -31,44 +31,44 @@ export default function Leaderboard() {
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        // Use the specified API endpoint
-        const response = await fetch('https://highscore-api.vercel.app/api/top-users')
+        // Using our own server-side proxy to avoid CORS issues
+        const response = await fetch('/api/proxy/leaderboard');
         
         if (!response.ok) {
-          throw new Error(`API responded with status: ${response.status}`)
+          throw new Error(`API responded with status: ${response.status}`);
         }
         
-        const data: ApiResponse = await response.json()
+        const data: ApiResponse = await response.json();
         
         if (!data.scores || !Array.isArray(data.scores)) {
-          throw new Error('Invalid data format received from API')
+          throw new Error('Invalid data format received from API');
         }
         
         // Transform the data to match our LeaderboardEntry type
         const formattedData: LeaderboardEntry[] = data.scores.map((item) => ({
           name: shortenAddress(item.address),
           score: item.score
-        }))
+        }));
         
-        setLeaderboard(formattedData)
+        setLeaderboard(formattedData);
       } catch (error) {
-        console.error('Error fetching leaderboard:', error)
+        console.error('Error fetching leaderboard:', error);
         
-        // Fallback data for testing
+        // Use the exact data from your Postman response as fallback
         const fallbackData: LeaderboardEntry[] = [
-          { name: '0xd23b...1647', score: 155 },
-          { name: '0xd23b...1532', score: 120 },
-          { name: '0x8a7c...9e21', score: 118 },
-          { name: '0x3f5d...42a9', score: 105 },
-          { name: '0xb1e9...7c63', score: 95 }
-        ]
-        setLeaderboard(fallbackData)
+          { name: shortenAddress('0xd23b2d6F4f62c3C66fc5935e38Ea6c88000875532'), score: 215 },
+          { name: shortenAddress('0xd23b2d6F4f62c3C66fc5935e38Ea6c8817021647'), score: 155 },
+          { name: shortenAddress('0xd23b2d6F4f62c3C66fc5935e38Ea6c88145821532'), score: 120 },
+          { name: shortenAddress('0xd23b2d6F4f62c3C66fc5935e38Ea6c8817021532'), score: 120 },
+          { name: shortenAddress('0xd23b2d6F4f62c3C66fc5935e38Ea6c88000021532'), score: 105 }
+        ];
+        setLeaderboard(fallbackData);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
     
-    fetchLeaderboard()
+    fetchLeaderboard();
   }, [])
 
   return (
