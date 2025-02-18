@@ -2,6 +2,16 @@
 
 import React, { useEffect, useState } from 'react'
 
+type ApiResponse = {
+  success: boolean
+  count: number
+  limit: number
+  scores: {
+    address: string
+    score: number
+  }[]
+}
+
 type LeaderboardEntry = {
   pfp: string
   name: string
@@ -13,20 +23,40 @@ export default function Leaderboard() {
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
   const [loading, setLoading] = useState(true)
 
+  // Function to shorten address
+  const shortenAddress = (address: string) => {
+    return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`
+  }
+  
+  // Function to generate random knife type
+  const getRandomKnife = () => {
+    const knives = ['Butterfly', 'Karambit', 'Flip', 'Bayonet', 'Bowie']
+    return knives[Math.floor(Math.random() * knives.length)]
+  }
+
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        // Replace with your API endpoint
-        const response = await fetch('/api/leaderboard')
-        const data = await response.json()
-        setLeaderboard(data)
+        // Use the specified API endpoint
+        const response = await fetch('https://highscore-api.vercel.app/api/top-users')
+        const data: ApiResponse = await response.json()
+        
+        // Transform the data to match our LeaderboardEntry type
+        const formattedData: LeaderboardEntry[] = data.scores.map((item) => ({
+          pfp: '👤', // Using an emoji as placeholder for profile picture
+          name: shortenAddress(item.address),
+          knife: getRandomKnife(), // Assign a random knife type
+          score: item.score
+        }))
+        
+        setLeaderboard(formattedData)
       } catch (error) {
         console.error('Error fetching leaderboard:', error)
       } finally {
         setLoading(false)
       }
     }
-
+    
     fetchLeaderboard()
   }, [])
 
@@ -42,7 +72,7 @@ export default function Leaderboard() {
             Top 100
           </h2>
         </div>
-
+        
         {/* Table */}
         <div className="bg-white flex-1 overflow-y-auto">
           <table className="w-full border-collapse">
@@ -72,7 +102,7 @@ export default function Leaderboard() {
             </tbody>
           </table>
         </div>
-
+        
         {/* Buttons */}
         <div className="flex justify-center gap-4 mt-4">
           <button 
@@ -92,4 +122,3 @@ export default function Leaderboard() {
     </div>
   )
 }
-
