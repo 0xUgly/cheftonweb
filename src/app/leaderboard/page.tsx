@@ -36,8 +36,7 @@ export default function Leaderboard() {
         
         // Try multiple approaches in sequence
         const endpoints = [
-          'https://highscore-api.vercel.app/api/top-users', // Direct API (might fail due to CORS)
-          '/api/proxy/leaderboard'                          // App Router API route
+          'https://highscore-api.vercel.app/api/top-users' // App Router API route
         ];
         
         for (const endpoint of endpoints) {
