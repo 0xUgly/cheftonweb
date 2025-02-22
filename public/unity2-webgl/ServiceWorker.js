@@ -1,9 +1,9 @@
 const cacheName = "RuptureLabs-Chefton-1.0";
 const contentToCache = [
-    "Build/Chefton.loader.js",
-    "Build/Chefton.framework.js",
-    "Build/Chefton.data",
-    "Build/Chefton.wasm",
+    "Build/ChefTon.loader.js",
+    "Build/ChefTon.framework.js",
+    "Build/ChefTon.data",
+    "Build/ChefTon.wasm",
     "TemplateData/style.css"
 
 ];
