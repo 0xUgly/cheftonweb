@@ -32,13 +32,13 @@ function Header() {
       {isMenuOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center">
           <nav className="text-center flex flex-col items-center space-y-4">
-            <Link href="/gamepage" onClick={() => setIsMenuOpen(false)} className="block mb-4 hover:opacity-80 transition-opacity">
+            <Link href="/gamepage" onClick={() => setIsMenuOpen(false)} className="block mb-4 hover:opacity-80 transition-opacity mx-auto">
               <Image src="/images/playnow.png" alt="Play Now" width={200} height={50} className="object-contain" />
             </Link>
-            <Link href="/profile" onClick={() => setIsMenuOpen(false)} className="block mb-4 hover:opacity-80 transition-opacity">
+            <Link href="/profile" onClick={() => setIsMenuOpen(false)} className="block mb-4 hover:opacity-80 transition-opacity mx-auto">
               <Image src="/images/profile.png" alt="Profile" width={200} height={50} className="object-contain" />
             </Link>
-            <Link href="/leaderboard" onClick={() => setIsMenuOpen(false)} className="block mb-4 hover:opacity-80 transition-opacity">
+            <Link href="/leaderboard" onClick={() => setIsMenuOpen(false)} className="block mb-4 hover:opacity-80 transition-opacity mx-auto">
               <Image src="/images/leaderboard.png" alt="Leaderboard" width={200} height={50} className="object-contain" />
             </Link>
             {/* Activation Link - Shows "Coming Soon" alert */}
@@ -47,7 +47,7 @@ function Header() {
                 alert("Coming Soon");
                 setIsMenuOpen(false);
               }}
-              className="block mb-4 hover:opacity-80 transition-opacity"
+              className="block mb-4 hover:opacity-80 transition-opacity mx-auto"
             >
               <Image src="/images/activations.png" alt="Activation" width={200} height={50} className="object-contain" />
             </button>
