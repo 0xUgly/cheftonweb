@@ -31,35 +31,26 @@ function Header() {
       {/* Full-screen Navigation Overlay */}
       {isMenuOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center">
-          <nav className="text-center w-full px-6">
-            <Link 
-              href="/gamepage" 
-              className="block text-white text-3xl sm:text-4xl mb-6 hover:text-[#FFD700] transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Home
+          <nav className="text-center w-full px-6 flex flex-col items-center space-y-4">
+            <Link href="/gamepage" onClick={() => setIsMenuOpen(false)} className="block mb-4 hover:opacity-80 transition-opacity">
+              <Image src="/images/playnow.png" alt="Play Now" width={200} height={50} className="object-contain" />
             </Link>
-            <Link 
-              href="/profile" 
-              className="block text-white text-3xl sm:text-4xl mb-6 hover:text-[#FFD700] transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Profile
+            <Link href="/profile" onClick={() => setIsMenuOpen(false)} className="block mb-4 hover:opacity-80 transition-opacity">
+              <Image src="/images/profile.png" alt="Profile" width={200} height={50} className="object-contain" />
             </Link>
-            <Link 
-              href="/about" 
-              className="block text-white text-3xl sm:text-4xl mb-6 hover:text-[#FFD700] transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Activation
+            <Link href="/leaderboard" onClick={() => setIsMenuOpen(false)} className="block mb-4 hover:opacity-80 transition-opacity">
+              <Image src="/images/leaderboard.png" alt="Leaderboard" width={200} height={50} className="object-contain" />
             </Link>
-            <Link 
-              href="/leaderboard" 
-              className="block text-white text-3xl sm:text-4xl mb-6 hover:text-[#FFD700] transition-colors"
-              onClick={() => setIsMenuOpen(false)}
+            {/* Activation Link - Shows "Coming Soon" alert */}
+            <button
+              onClick={() => {
+                alert("Coming Soon");
+                setIsMenuOpen(false);
+              }}
+              className="block mb-4 hover:opacity-80 transition-opacity"
             >
-              Leaderboard
-            </Link>
+              <Image src="/images/activations.png" alt="Activation" width={200} height={50} className="object-contain" />
+            </button>
           </nav>
         </div>
       )}
