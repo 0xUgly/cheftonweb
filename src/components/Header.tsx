@@ -46,17 +46,15 @@ function Header({ onGameSelect }: HeaderProps) {
       {/* Full-screen Navigation Overlay */}
       {isMenuOpen && (
         <div className="fixed inset-0 bg-[#e7a1a2] z-50 flex flex-col items-center">
-          {/* Menu Title Area */}
+          {/* Menu Title Area with chef.png (contains both Menù text and chef character) */}
           <div className="w-full flex justify-center items-center mt-16 mb-8">
-            <div className="relative">
-              <Image 
-                src="/images/chef.png" 
-                alt="Chef" 
-                width={100}
-                height={100}
-                className="absolute -right-24 -top-2 object-contain" 
-              />
-            </div>
+            <Image 
+              src="/images/chef.png" 
+              alt="Menu with Chef" 
+              width={300}
+              height={100}
+              className="object-contain" 
+            />
           </div>
           
           {/* Navigation Buttons */}
