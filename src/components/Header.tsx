@@ -45,44 +45,61 @@ function Header({ onGameSelect }: HeaderProps) {
       
       {/* Full-screen Navigation Overlay */}
       {isMenuOpen && (
-        <div className="fixed inset-0 bg-[#e7a1a2] z-50 flex flex-col items-center justify-start pt-24">
-          {/* Title with chef image */}
-          <div className="flex items-center justify-center mb-8">
-            <h1 className="text-6xl font-bold text-yellow-400 mr-2">Menù</h1>
-            <div className="relative w-16 h-16">
+        <div className="fixed inset-0 bg-[#e7a1a2] z-50 flex flex-col items-center">
+          {/* Menu Title Area */}
+          <div className="w-full flex justify-center items-center mt-16 mb-8">
+            <div className="relative">
               <Image 
                 src="/images/chef.png" 
                 alt="Chef" 
-                width={64} 
-                height={64}
-                className="object-contain" 
+                width={100}
+                height={100}
+                className="absolute -right-24 -top-2 object-contain" 
               />
             </div>
           </div>
           
           {/* Navigation Buttons */}
-          <div className="w-full max-w-sm px-6 space-y-4">
+          <div className="w-full px-8 space-y-6">
             <button 
               onClick={handlePlayNow}
-              className="w-full bg-gray-200 hover:bg-gray-300 text-black font-bold py-3 px-4 rounded-lg transition-colors"
+              className="w-full flex justify-center hover:opacity-90 transition-opacity"
             >
-              PLAY NOW
+              <Image 
+                src="/images/playnow.png" 
+                alt="Play Now" 
+                width={300} 
+                height={60}
+                className="object-contain" 
+              />
             </button>
             
             <Link 
               href="/profile" 
               onClick={() => setIsMenuOpen(false)}
-              className="block w-full bg-gray-200 hover:bg-gray-300 text-black font-bold py-3 px-4 rounded-lg text-center transition-colors"
+              className="w-full flex justify-center hover:opacity-90 transition-opacity"
             >
-              PROFILE
+              <Image 
+                src="/images/profile.png" 
+                alt="Profile" 
+                width={300} 
+                height={60}
+                className="object-contain" 
+              />
             </Link>
             
             <Link 
               href="/leaderboard" 
               onClick={() => setIsMenuOpen(false)}
-              className="block w-full bg-gray-200 hover:bg-gray-300 text-black font-bold py-3 px-4 rounded-lg text-center transition-colors"
+              className="w-full flex justify-center hover:opacity-90 transition-opacity"
             >
-              LEADERBOARD
+              <Image 
+                src="/images/leaderboard.png" 
+                alt="Leaderboard" 
+                width={300} 
+                height={60}
+                className="object-contain" 
+              />
             </Link>
             
             <button
@@ -90,9 +107,15 @@ function Header({ onGameSelect }: HeaderProps) {
                 alert("Coming Soon");
                 setIsMenuOpen(false);
               }}
-              className="w-full bg-gray-200 hover:bg-gray-300 text-black font-bold py-3 px-4 rounded-lg transition-colors"
+              className="w-full flex justify-center hover:opacity-90 transition-opacity"
             >
-              ACTIVATION (SOON)
+              <Image 
+                src="/images/activations.png" 
+                alt="Activation" 
+                width={300} 
+                height={60}
+                className="object-contain" 
+              />
             </button>
           </div>
         </div>
