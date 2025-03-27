@@ -28,37 +28,44 @@ function Header() {
         </button>
       </div>
       
-      {/* Attached Navigation Menu */}
-      <div className={`fixed top-[88px] right-0 w-64 bg-[#e7a1a2] rounded-l-lg shadow-lg transform transition-transform duration-300 ease-in-out z-50 ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-        <nav className="text-center flex flex-col items-center py-6 space-y-6">
-          <Link href="/gamepage" onClick={() => setIsMenuOpen(false)} className="block hover:opacity-80 transition-opacity mx-auto">
-            <Image src="/images/playnow.png" alt="Play Now" width={180} height={45} className="object-contain" />
-          </Link>
-          <Link href="/profile" onClick={() => setIsMenuOpen(false)} className="block hover:opacity-80 transition-opacity mx-auto">
-            <Image src="/images/profile.png" alt="Profile" width={180} height={45} className="object-contain" />
-          </Link>
-          <Link href="/leaderboard" onClick={() => setIsMenuOpen(false)} className="block hover:opacity-80 transition-opacity mx-auto">
-            <Image src="/images/leaderboard.png" alt="Leaderboard" width={180} height={45} className="object-contain" />
-          </Link>
-          {/* Activation Link - Shows "Coming Soon" alert */}
-          <button
-            onClick={() => {
-              alert("Coming Soon");
-              setIsMenuOpen(false);
-            }}
-            className="block hover:opacity-80 transition-opacity mx-auto"
-          >
-            <Image src="/images/activations.png" alt="Activation" width={180} height={45} className="object-contain" />
-          </button>
-        </nav>
-      </div>
-      
-      {/* Optional overlay for closing menu when clicking outside */}
+      {/* Full-screen Navigation Overlay with blur */}
       {isMenuOpen && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-30 z-40"
-          onClick={() => setIsMenuOpen(false)}
-        />
+        <div className="fixed inset-0 backdrop-blur-md bg-black/60 z-50 flex items-center justify-center">
+          <div className="bg-[#e7a1a2] rounded-lg p-8 max-w-sm w-full">
+            <nav className="flex flex-col items-center space-y-4">
+              <Link 
+                href="/gamepage" 
+                onClick={() => setIsMenuOpen(false)} 
+                className="w-full bg-gray-200 rounded-lg py-3 font-semibold text-center text-black hover:bg-gray-300 transition-colors"
+              >
+                PLAY NOW
+              </Link>
+              <Link 
+                href="/profile" 
+                onClick={() => setIsMenuOpen(false)} 
+                className="w-full bg-gray-200 rounded-lg py-3 font-semibold text-center text-black hover:bg-gray-300 transition-colors"
+              >
+                PROFILE
+              </Link>
+              <Link 
+                href="/leaderboard" 
+                onClick={() => setIsMenuOpen(false)} 
+                className="w-full bg-gray-200 rounded-lg py-3 font-semibold text-center text-black hover:bg-gray-300 transition-colors"
+              >
+                LEADERBOARD
+              </Link>
+              <button
+                onClick={() => {
+                  alert("Coming Soon");
+                  setIsMenuOpen(false);
+                }}
+                className="w-full bg-gray-200 rounded-lg py-3 font-semibold text-center text-black hover:bg-gray-300 transition-colors"
+              >
+                ACTIVATION (SOON)
+              </button>
+            </nav>
+          </div>
+        </div>
       )}
     </>
   )
