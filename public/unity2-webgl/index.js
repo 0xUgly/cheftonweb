@@ -36,11 +36,11 @@ window.addEventListener("load", function () {
   }
 
   var buildUrl = "Build";
-  var loaderUrl = buildUrl + "/ChefTon.loader.js";
+  var loaderUrl = buildUrl + "/Chefton.loader.js";
   var config = {
-    dataUrl: buildUrl + "/ChefTon.data",
-    frameworkUrl: buildUrl + "/ChefTon.framework.js",
-    codeUrl: buildUrl + "/ChefTon.wasm",
+    dataUrl: buildUrl + "/Chefton.data",
+    frameworkUrl: buildUrl + "/Chefton.framework.js",
+    codeUrl: buildUrl + "/Chefton.wasm",
     streamingAssetsUrl: "StreamingAssets",
     companyName: "RuptureLabs",
     productName: "Chefton",
