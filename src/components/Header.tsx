@@ -31,7 +31,7 @@ function Header() {
       {/* Full-screen Navigation Overlay */}
       {isMenuOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center">
-          <nav className="text-center w-full px-6 flex flex-col items-center space-y-4">
+          <nav className="text-center flex flex-col items-center space-y-4">
             <Link href="/gamepage" onClick={() => setIsMenuOpen(false)} className="block mb-4 hover:opacity-80 transition-opacity">
               <Image src="/images/playnow.png" alt="Play Now" width={200} height={50} className="object-contain" />
             </Link>
