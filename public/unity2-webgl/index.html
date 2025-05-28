@@ -3,22 +3,116 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | Chefton</title>
+    <title>Chefton</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
     <link rel="manifest" href="manifest.webmanifest">
+    
+    <!-- Add custom styles to control the container size -->
+    <style>
+      body {
+        margin: 0;
+        padding: 20px;
+        background: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        box-sizing: border-box;
+      }
+      
+      #unity-container {
+        width: 1280px;
+        height: 720px;
+        position: relative;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      }
+      
+      #unity-canvas {
+        width: 100% !important;
+        height: 100% !important;
+        background: #000;
+      }
+      
+      /* Fullscreen button styling */
+      #fullscreen-btn {
+        position: absolute;
+        bottom: -40px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 8px 16px;
+        background: #333;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        z-index: 10;
+      }
+      
+      #fullscreen-btn:hover {
+        background: #555;
+      }
+      
+      /* Mobile adjustments */
+      @media (max-width: 1280px) {
+        #unity-container {
+          width: 100%;
+          height: auto;
+          aspect-ratio: 1280 / 720;
+        }
+      }
+    </style>
   </head>
   <body>
     <div id="unity-container">
-      <canvas id="unity-canvas" width=1920 height=1080 tabindex="-1"></canvas>
+      <canvas id="unity-canvas" width=1280 height=720 tabindex="-1"></canvas>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
           <div id="unity-progress-bar-full"></div>
         </div>
       </div>
-      <div id="unity-warning"> </div>
+      <div id="unity-warning"></div>
+      
+      <!-- Add fullscreen toggle button -->
+      <button id="fullscreen-btn">Toggle Fullscreen</button>
     </div>
+    
     <script src="index.js"></script>
+    
+    <!-- Add fullscreen control script -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        const unityContainer = document.getElementById('unity-container');
+        const canvas = document.getElementById('unity-canvas');
+        
+        // Toggle fullscreen
+        fullscreenBtn.addEventListener('click', function() {
+          if (!document.fullscreenElement) {
+            unityContainer.requestFullscreen().catch(err => {
+              console.error(`Fullscreen error: ${err.message}`);
+            });
+          } else {
+            if (document.exitFullscreen) {
+              document.exitFullscreen();
+            }
+          }
+        });
+        
+        // Adjust for mobile devices
+        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+          const meta = document.createElement('meta');
+          meta.name = 'viewport';
+          meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+          document.head.appendChild(meta);
+          
+          // Make container responsive on mobile
+          unityContainer.style.width = '100%';
+          unityContainer.style.height = 'auto';
+          unityContainer.style.aspectRatio = '1280 / 720';
+        }
+      });
+    </script>
   </body>
 </html>
