@@ -8,24 +8,27 @@
     <link rel="stylesheet" href="TemplateData/style.css">
     <link rel="manifest" href="manifest.webmanifest">
     
-    <!-- Add custom styles to control the container size -->
     <style>
       body {
         margin: 0;
-        padding: 20px;
+        padding: 0; /* Remove padding to allow true full screen */
         background: #000;
         display: flex;
         justify-content: center;
         align-items: center;
         min-height: 100vh;
         box-sizing: border-box;
+        overflow: hidden; /* Prevent scrolling */
       }
       
       #unity-container {
-        width: 1280px;
-        height: 720px;
+        width: 100vw; /* Use viewport width */
+        height: 100vh; /* Use viewport height */
         position: relative;
         box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        display: flex; /* Use flexbox to center canvas */
+        justify-content: center;
+        align-items: center;
       }
       
       #unity-canvas {
@@ -37,31 +40,49 @@
       /* Fullscreen button styling */
       #fullscreen-btn {
         position: absolute;
-        bottom: -40px;
+        bottom: 20px; /* Adjust position for better visibility */
         left: 50%;
         transform: translateX(-50%);
-        padding: 8px 16px;
+        padding: 10px 20px; /* Slightly larger for touch */
         background: #333;
         color: white;
         border: none;
-        border-radius: 4px;
+        border-radius: 8px; /* Rounded corners */
         cursor: pointer;
         z-index: 10;
+        font-family: 'Inter', sans-serif; /* Use Inter font */
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* Add shadow */
+        transition: background 0.3s ease; /* Smooth transition */
       }
       
       #fullscreen-btn:hover {
         background: #555;
       }
       
-      /* Mobile adjustments */
-      @media (max-width: 1280px) {
+      /* Hide Unity's default fullscreen button if it exists in style.css */
+      .fullscreen {
+          display: none !important;
+      }
+
+      /* Responsive adjustments for Unity container */
+      @media (max-width: 768px) {
+        body {
+            padding: 0; /* Remove padding on smaller screens */
+        }
         #unity-container {
-          width: 100%;
-          height: auto;
-          aspect-ratio: 1280 / 720;
+            width: 100vw;
+            height: 100vh;
+            /* For portrait, you might want to adjust aspect ratio or let Unity handle it */
+            /* If your Unity game is designed for portrait, ensure its internal resolution matches */
+        }
+        #fullscreen-btn {
+            bottom: 10px; /* Adjust for smaller screens */
+            padding: 12px 24px;
+            font-size: 0.9em;
         }
       }
     </style>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
   </head>
   <body>
     <div id="unity-container">
@@ -74,43 +95,130 @@
       </div>
       <div id="unity-warning"></div>
       
-      <!-- Add fullscreen toggle button -->
       <button id="fullscreen-btn">Toggle Fullscreen</button>
     </div>
     
-    <script src="index.js"></script>
-    
-    <!-- Add fullscreen control script -->
+    <script src="Build/UnityLoader.js"></script>
+    <script>
+      var gameInstance = UnityLoader.instantiate("unity-canvas", "Build/YourGameName.json", {
+        onProgress: UnityProgress // Assuming UnityProgress.js is correctly loaded
+      });
+    </script>
+
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         const fullscreenBtn = document.getElementById('fullscreen-btn');
         const unityContainer = document.getElementById('unity-container');
         const canvas = document.getElementById('unity-canvas');
         
-        // Toggle fullscreen
-        fullscreenBtn.addEventListener('click', function() {
-          if (!document.fullscreenElement) {
-            unityContainer.requestFullscreen().catch(err => {
-              console.error(`Fullscreen error: ${err.message}`);
-            });
+        // Ensure the Telegram WebApp object is available
+        const tg = window.Telegram && window.Telegram.WebApp;
+
+        if (tg) {
+          console.log("Telegram WebApp object found. Initializing Mini App...");
+
+          // Initialize the Telegram Web App (optional, but good practice)
+          if (tg.initData) {
+              console.log("Telegram WebApp initialized. InitData available.");
           } else {
-            if (document.exitFullscreen) {
-              document.exitFullscreen();
-            }
+              console.warn("Telegram WebApp: initData not available.");
           }
-        });
+
+          // Request fullscreen immediately
+          if (tg.requestFullscreen && !tg.isExpanded) { // Check if already expanded to avoid unnecessary calls
+            tg.expand(); // Expand first, then request fullscreen for smoother transition
+            console.log("Telegram WebApp: Attempting to expand.");
+          }
+
+          // Request fullscreen after a short delay to allow expand to settle, or directly if expand is not needed
+          setTimeout(() => {
+            if (tg.requestFullscreen && !tg.isFullscreen) {
+                tg.requestFullscreen();
+                console.log("Telegram WebApp: Attempting to request fullscreen.");
+            } else if (tg.isFullscreen) {
+                console.log("Telegram WebApp: Already in fullscreen mode.");
+            } else {
+                console.warn("Telegram WebApp: requestFullscreen method not available.");
+            }
+          }, 500); // Small delay
+
+          // Lock orientation to landscape
+          if (tg.lockOrientation) {
+            tg.lockOrientation('landscape'); // Changed from 'portrait' to 'landscape'
+            console.log("Telegram WebApp: Locked orientation to landscape.");
+          } else {
+            console.warn("Telegram WebApp: lockOrientation method not available.");
+          }
+
+          // Update button text based on fullscreen state
+          const updateFullscreenButtonText = () => {
+              if (tg.isFullscreen) {
+                  fullscreenBtn.textContent = 'Exit Fullscreen';
+              } else {
+                  fullscreenBtn.textContent = 'Enter Fullscreen';
+              }
+          };
+
+          // Listen for fullscreen changes from Telegram API
+          tg.onEvent('fullscreenChanged', updateFullscreenButtonText);
+          updateFullscreenButtonText(); // Set initial button text
+
+          // Toggle fullscreen using Telegram API methods
+          fullscreenBtn.addEventListener('click', function() {
+            if (tg.isFullscreen) {
+              if (tg.exitFullscreen) {
+                tg.exitFullscreen();
+                console.log("Telegram WebApp: Attempting to exit fullscreen.");
+              } else {
+                console.warn("Telegram WebApp: exitFullscreen method not available.");
+                // Fallback to browser's exit fullscreen if Telegram's is not available
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+              }
+            } else {
+              if (tg.requestFullscreen) {
+                tg.requestFullscreen();
+                console.log("Telegram WebApp: Attempting to enter fullscreen.");
+              } else {
+                console.warn("Telegram WebApp: requestFullscreen method not available.");
+                // Fallback to browser's request fullscreen if Telegram's is not available
+                if (unityContainer.requestFullscreen) {
+                    unityContainer.requestFullscreen().catch(err => {
+                        console.error(`Browser Fullscreen error: ${err.message}`);
+                    });
+                }
+              }
+            }
+          });
+
+        } else {
+          console.warn("Telegram WebApp object not found. Running outside Telegram Mini App environment.");
+          // Fallback for standard browser fullscreen if not in Telegram Mini App
+          fullscreenBtn.addEventListener('click', function() {
+            if (!document.fullscreenElement) {
+              unityContainer.requestFullscreen().catch(err => {
+                console.error(`Fullscreen error (browser fallback): ${err.message}`);
+              });
+            } else {
+              if (document.exitFullscreen) {
+                document.exitFullscreen();
+              }
+            }
+          });
+        }
         
-        // Adjust for mobile devices
+        // Mobile viewport meta tag and responsive container adjustments
         if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
           const meta = document.createElement('meta');
           meta.name = 'viewport';
           meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
           document.head.appendChild(meta);
           
-          // Make container responsive on mobile
-          unityContainer.style.width = '100%';
-          unityContainer.style.height = 'auto';
-          unityContainer.style.aspectRatio = '1280 / 720';
+          // These styles are already handled by the CSS, but ensure no conflicting inline styles
+          unityContainer.style.width = '100vw';
+          unityContainer.style.height = '100vh';
+          unityContainer.style.aspectRatio = ''; /* Remove aspect ratio if you want full viewport fill */
         }
       });
     </script>
