@@ -166,30 +166,60 @@
           // Toggle fullscreen using Telegram API methods
           fullscreenBtn.addEventListener('click', function() {
             if (tg.isFullscreen) {
-              if (tg.exitFullscreen) {
-                tg.exitFullscreen();
-                console.log("Telegram WebApp: Attempting to exit fullscreen.");
-              } else {
-                console.warn("Telegram WebApp: exitFullscreen method not available.");
-                // Fallback to browser's exit fullscreen if Telegram's is not available
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
-              }
+              tg.exitFullscreen();
+              console.log("Telegram WebApp: Attempting to exit fullscreen.");
             } else {
-              if (tg.requestFullscreen) {
-                tg.requestFullscreen();
-                console.log("Telegram WebApp: Attempting to enter fullscreen.");
-              } else {
-                console.warn("Telegram WebApp: requestFullscreen method not available.");
-                // Fallback to browser's request fullscreen if Telegram's is not available
-                if (unityContainer.requestFullscreen) {
-                    unityContainer.requestFullscreen().catch(err => {
-                        console.error(`Browser Fullscreen error: ${err.message}`);
-                    });
-                }
-              }
+              tg.requestFullscreen();
+              console.log("Telegram WebApp: Attempting to enter fullscreen.");
             }
+          });
+
+          // Function to handle safe area insets
+          const handleSafeAreaInsets = () => {
+            if (tg) {
+              const safeArea = tg.safeArea;
+              const contentSafeArea = tg.contentSafeArea;
+              const isActive = tg.isActive;
+              const isFullscreen = tg.isFullscreen;
+
+              console.log('Safe Area:', safeArea);
+              console.log('Content Safe Area:', contentSafeArea);
+              console.log('isActive:', isActive);
+              console.log('isFullscreen:', isFullscreen);
+
+              // TODO: Update Next.js UI based on these values
+              // Example:
+              // document.getElementById('your-element').style.paddingTop = safeArea.top + 'px';
+            }
+          };
+
+          // Initial safe area insets
+          handleSafeAreaInsets();
+
+          // Listen for safe area changes
+          tg.onEvent('safeAreaChanged', handleSafeAreaInsets);
+          tg.onEvent('contentSafeAreaChanged', handleSafeAreaInsets);
+
+          // Listen for activated and deactivated events
+          tg.onEvent('activated', () => {
+            console.log('Telegram WebApp activated');
+            // TODO: Update Next.js UI based on activation state
+          });
+
+          tg.onEvent('deactivated', () => {
+            console.log('Telegram WebApp deactivated');
+            // TODO: Update Next.js UI based on deactivation state
+          });
+
+          // Listen for fullscreen changes
+          tg.onEvent('fullscreenChanged', () => {
+            updateFullscreenButtonText();
+            // TODO: Update Next.js UI based on fullscreen state
+          });
+
+          tg.onEvent('fullscreenFailed', () => {
+            console.warn('Telegram WebApp: Fullscreen failed.');
+            // TODO: Handle fullscreen failure
           });
 
         } else {
