@@ -24,27 +24,33 @@ export default function RootLayout({
     const tg = window.Telegram && window.Telegram.WebApp;
 
     if (tg) {
-      const safeArea = tg.safeArea;
-      const contentSafeArea = tg.contentSafeArea;
-      const isFullscreen = tg.isFullscreen;
-
-      document.body.style.paddingTop = safeArea.top + 'px';
-      document.body.style.paddingLeft = safeArea.left + 'px';
-      document.body.style.paddingRight = safeArea.right + 'px';
-      document.body.style.paddingBottom = safeArea.bottom + 'px';
-
-      if (isFullscreen) {
-        document.body.style.overflow = 'hidden';
-      } else {
-        document.body.style.overflow = 'auto';
-      }
-
-      tg.onEvent('safeAreaChanged', () => {
+      // Check if safeArea is defined before accessing its properties
+      if (tg.safeArea) {
         const safeArea = tg.safeArea;
+        const contentSafeArea = tg.contentSafeArea;
+        const isFullscreen = tg.isFullscreen;
+
         document.body.style.paddingTop = safeArea.top + 'px';
         document.body.style.paddingLeft = safeArea.left + 'px';
         document.body.style.paddingRight = safeArea.right + 'px';
         document.body.style.paddingBottom = safeArea.bottom + 'px';
+
+        if (isFullscreen) {
+          document.body.style.overflow = 'hidden';
+        } else {
+          document.body.style.overflow = 'auto';
+        }
+      }
+
+      tg.onEvent('safeAreaChanged', () => {
+        // Check if safeArea is defined before accessing its properties
+        if (tg.safeArea) {
+          const safeArea = tg.safeArea;
+          document.body.style.paddingTop = safeArea.top + 'px';
+          document.body.style.paddingLeft = safeArea.left + 'px';
+          document.body.style.paddingRight = safeArea.right + 'px';
+          document.body.style.paddingBottom = safeArea.bottom + 'px';
+        }
       });
 
       tg.onEvent('fullscreenChanged', () => {
