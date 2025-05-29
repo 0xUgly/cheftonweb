@@ -3,6 +3,20 @@ window.addEventListener("load", function () {
       navigator.serviceWorker.register("ServiceWorker.js");
     }
   });
+
+  // Attempt to lock orientation to landscape
+  try {
+    screen.orientation.lock("landscape");
+  } catch (error) {
+    console.warn("Failed to lock orientation: ", error);
+  }
+
+  // Attempt to enter fullscreen
+  try {
+    document.documentElement.requestFullscreen();
+  } catch (error) {
+    console.warn("Failed to enter fullscreen: ", error);
+  }
   var unityInstanceRef;
   var unsubscribe;
   var container = document.querySelector("#unity-container");
