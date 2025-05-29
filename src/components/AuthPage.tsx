@@ -6,22 +6,13 @@ interface GameSelectionUIProps {
   isLoading: boolean;
   selectedGame: string;
   onGameSelect: (game: string) => void;
-  paddingTop: number;
-  paddingLeft: number;
-  paddingRight: number;
-  paddingBottom: number;
 }
 
-const GameSelectionUI: React.FC<GameSelectionUIProps> = ({ isLoading, selectedGame, onGameSelect, paddingTop, paddingLeft, paddingRight, paddingBottom }) => {
+const GameSelectionUI: React.FC<GameSelectionUIProps> = ({ isLoading, selectedGame, onGameSelect }) => {
   return (
     <>
       <Header onGameSelect={onGameSelect} />
-      <div className="relative h-screen font-biorhyme w-full" style={{
-        paddingTop: paddingTop,
-        paddingLeft: paddingLeft,
-        paddingRight: paddingRight,
-        paddingBottom: paddingBottom,
-      }}>
+      <div className="relative h-screen font-biorhyme w-full">
         <video
           autoPlay
           muted

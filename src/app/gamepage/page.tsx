@@ -1,6 +1,6 @@
 "use client";
 import GameSelectionUI from "@/components/AuthPage";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 
 export default function BinanceLogin({
@@ -11,21 +11,6 @@ export default function BinanceLogin({
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const [selectedGame, setSelectedGame] = useState("");
-    const [safeAreaInsets, setSafeAreaInsets] = useState({ top: 0, left: 0, right: 0, bottom: 0 });
-  
-    useEffect(() => {
-      const tg = window.Telegram && window.Telegram.WebApp;
-
-      if (tg) {
-        const safeArea = tg.safeArea;
-        setSafeAreaInsets(safeArea);
-
-        tg.onEvent('safeAreaChanged', () => {
-          const safeArea = tg.safeArea;
-          setSafeAreaInsets(safeArea);
-        });
-      }
-    }, []);
   
     const handleRedirect = useCallback((game: string) => {
       setIsLoading(true);
@@ -44,11 +29,7 @@ export default function BinanceLogin({
    isLoading={isLoading}
    selectedGame={selectedGame}
    onGameSelect={handleRedirect}
-   paddingTop={safeAreaInsets.top}
-   paddingLeft={safeAreaInsets.left}
-   paddingRight={safeAreaInsets.right}
-   paddingBottom={safeAreaInsets.bottom}
-   />
+  />
      </>
     );
   }
