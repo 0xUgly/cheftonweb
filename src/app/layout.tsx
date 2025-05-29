@@ -64,7 +64,11 @@ export default function RootLayout({
 
       // Lock orientation to landscape
       if (tg.lockOrientation) {
-        tg.lockOrientation('landscape');
+        try {
+          tg.lockOrientation('landscape');
+        } catch (error:any) {
+          console.warn("Telegram WebApp: lockOrientation failed.", error.message);
+        }
       }
     }
   }, []);
