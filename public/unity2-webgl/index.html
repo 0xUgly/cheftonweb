@@ -7,6 +7,7 @@
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
     <link rel="manifest" href="manifest.webmanifest">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
     <!-- Add custom styles to control the container size -->
     <style>
@@ -74,45 +75,11 @@
       </div>
       <div id="unity-warning"></div>
       
-      <!-- Add fullscreen toggle button -->
-      <button id="fullscreen-btn">Toggle Fullscreen</button>
     </div>
     
     <script src="index.js"></script>
-    
-    <!-- Add fullscreen control script -->
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const fullscreenBtn = document.getElementById('fullscreen-btn');
-        const unityContainer = document.getElementById('unity-container');
-        const canvas = document.getElementById('unity-canvas');
-        
-        // Toggle fullscreen
-        fullscreenBtn.addEventListener('click', function() {
-          if (!document.fullscreenElement) {
-            unityContainer.requestFullscreen().catch(err => {
-              console.error(`Fullscreen error: ${err.message}`);
-            });
-          } else {
-            if (document.exitFullscreen) {
-              document.exitFullscreen();
-            }
-          }
-        });
-        
-        // Adjust for mobile devices
-        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-          const meta = document.createElement('meta');
-          meta.name = 'viewport';
-          meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
-          document.head.appendChild(meta);
-          
-          // Make container responsive on mobile
-          unityContainer.style.width = '100%';
-          unityContainer.style.height = 'auto';
-          unityContainer.style.aspectRatio = '1280 / 720';
-        }
-      });
+      document.addEventListener('DOMContentLoaded', initializeMiniApp);
     </script>
   </body>
 </html>
