@@ -3,7 +3,6 @@
     "short_name": "Chefton",
     "start_url": "index.html",
     "display": "fullscreen",
-    "orientation": "landscape",
     "background_color": "#FFFFFF",
     "theme_color": "#000",
     "description": "",
