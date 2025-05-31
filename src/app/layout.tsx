@@ -33,6 +33,14 @@ export default function RootLayout({
         <Providers>{children}</Providers>
         </Suspense>
       </body>
+      <script>
+        {`
+          if (window.Telegram && window.Telegram.WebApp) {
+            window.Telegram.WebApp.expand();
+            window.Telegram.WebApp.MainButton.show();
+          }
+        `}
+      </script>
     </html>
   );
 }
