@@ -36,11 +36,11 @@ window.addEventListener("load", function () {
   }
 
   var buildUrl = "Build";
-  var loaderUrl = buildUrl + "/CheftonWebGL.loader.js";
+  var loaderUrl = buildUrl + "/Chefton_Web_Gl.loader.js";
   var config = {
-    dataUrl: buildUrl + "/CheftonWebGL.data",
-    frameworkUrl: buildUrl + "/CheftonWebGL.framework.js",
-    codeUrl: buildUrl + "/CheftonWebGL.wasm",
+    dataUrl: buildUrl + "/Chefton_Web_Gl.data",
+    frameworkUrl: buildUrl + "/Chefton_Web_Gl.framework.js",
+    codeUrl: buildUrl + "/Chefton_Web_Gl.wasm",
     streamingAssetsUrl: "StreamingAssets",
     companyName: "RuptureLabs",
     productName: "Chefton",
@@ -63,7 +63,7 @@ window.addEventListener("load", function () {
     document.getElementsByTagName('head')[0].appendChild(meta);
   }
 
-  canvas.style.background = "url('" + buildUrl + "/CheftonWebGL.jpg') center / cover";
+  canvas.style.background = "url('" + buildUrl + "/Chefton_Web_Gl.jpg') center / cover";
   loadingBar.style.display = "block";
 
   var script = document.createElement("script");
