@@ -79,3 +79,10 @@ window.addEventListener("load", function () {
     });
   };
   document.body.appendChild(script);
+
+  setTimeout(() => {
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+  }, 100);
