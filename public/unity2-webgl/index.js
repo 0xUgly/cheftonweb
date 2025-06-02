@@ -83,9 +83,6 @@ window.addEventListener("load", function () {
   setTimeout(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       Telegram.WebApp.ready();
-      Telegram.WebApp.expand();
-      Telegram.WebApp.onEvent('viewportChanged', function() {
-        console.log('Viewport changed:', Telegram.WebApp.viewportHeight);
-      });
+      canvas.requestFullscreen();
     }
   }, 100);
