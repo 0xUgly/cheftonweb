@@ -82,7 +82,12 @@ window.addEventListener("load", function () {
 
   setTimeout(() => {
     if (window.Telegram && window.Telegram.WebApp) {
-      Telegram.WebApp.ready();
-      canvas.requestFullscreen();
+      let tg = window.Telegram.WebApp;
+      tg.ready();
+      if (tg.requestFullscreen) {
+        tg.requestFullscreen();
+      } else {
+        console.warn("requestFullscreen is not available.");
+      }
     }
   }, 100);
