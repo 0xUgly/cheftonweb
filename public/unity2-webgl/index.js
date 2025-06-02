@@ -84,10 +84,26 @@ window.addEventListener("load", function () {
     if (window.Telegram && window.Telegram.WebApp) {
       let tg = window.Telegram.WebApp;
       tg.ready();
+
+      // Request full screen mode
       if (tg.requestFullscreen) {
         tg.requestFullscreen();
       } else {
         console.warn("requestFullscreen is not available.");
       }
+
+      // Check if in fullscreen
+      if (tg.isFullscreen) {
+        console.log("Already in fullscreen");
+      }
+
+      // Listen for fullscreen events
+      tg.onEvent('fullscreenChanged', function(eventData) {
+        console.log('Fullscreen changed:', eventData);
+      });
+
+      tg.onEvent('fullscreenFailed', function(eventData) {
+        console.log('Fullscreen failed:', eventData);
+      });
     }
   }, 100);
